@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Berpikir Kritis - Platform Edukasi Hutan</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>🎯 Game Berpikir Kritis</h1>
+      <p class="subtitle">Tantang Kemampuan Analisis dan Strategi Anda dalam Pengelolaan Hutan</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Game Selection -->
+    <div class="card">
+      <h2>🎮 Pilih Mode Permainan</h2>
+      <p style="font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8;">
+        Pilih salah satu game di bawah ini untuk mengasah kemampuan berpikir kritis dan analisis Anda. 
+        Setiap game memiliki tingkat kesulitan yang berbeda dan fokus pada aspek berbeda dari pengelolaan lingkungan.
+      </p>
+
+      <div class="features-grid">
+        <!-- Game 1: Resource Allocation -->
+        <div class="feature-card" style="cursor: pointer;" onclick="startGame('allocation')">
+          <div class="icon">💰</div>
+          <h4>Alokasi Sumber Daya</h4>
+          <p><strong>Tingkat Kesulitan: ⭐⭐⭐⭐</strong></p>
+          <p style="margin-top: 0.5rem;">
+            Alokasikan budget terbatas Rp 50 miliar untuk berbagai program konservasi. 
+            Setiap program memiliki cost, benefit, dan risiko berbeda. 
+            Optimalkan alokasi untuk mencapai target dengan budget terbatas.
+          </p>
+          <div style="margin-top: 1rem; padding: 0.5rem; background: #f1f8f4; border-radius: 6px;">
+            <strong>Keterampilan yang diasah:</strong>
+            <ul style="margin-top: 0.5rem; padding-left: 1.2rem; font-size: 0.9rem;">
+              <li>Analisis cost-benefit</li>
+              <li>Optimasi dengan constraint</li>
+              <li>Prioritasi strategis</li>
+            </ul>
+          </div>
+          <button class="btn" style="margin-top: 1rem; width: 100%;">Mulai Game</button>
+        </div>
+
+        <!-- Game 2: Scenario Analysis -->
+        <div class="feature-card" style="cursor: pointer;" onclick="startGame('scenario')">
+          <div class="icon">📊</div>
+          <h4>Analisis Skenario</h4>
+          <p><strong>Tingkat Kesulitan: ⭐⭐⭐⭐⭐</strong></p>
+          <p style="margin-top: 0.5rem;">
+            Analisis data kompleks dari 3 skenario berbeda. Identifikasi variabel kunci, 
+            prediksi dampak jangka panjang, dan pilih skenario terbaik berdasarkan 
+            analisis multi-kriteria yang mendalam.
+          </p>
+          <div style="margin-top: 1rem; padding: 0.5rem; background: #f1f8f4; border-radius: 6px;">
+            <strong>Keterampilan yang diasah:</strong>
+            <ul style="margin-top: 0.5rem; padding-left: 1.2rem; font-size: 0.9rem;">
+              <li>Analisis data kompleks</li>
+              <li>Prediksi dampak</li>
+              <li>Decision making berbasis data</li>
+            </ul>
+          </div>
+          <button class="btn" style="margin-top: 1rem; width: 100%;">Mulai Game</button>
+        </div>
+
+        <!-- Game 3: Strategic Planning -->
+        <div class="feature-card" style="cursor: pointer;" onclick="startGame('strategic')">
+          <div class="icon">🗺️</div>
+          <h4>Perencanaan Strategis</h4>
+          <p><strong>Tingkat Kesulitan: ⭐⭐⭐⭐⭐</strong></p>
+          <p style="margin-top: 0.5rem;">
+            Rencanakan strategi 10 tahun ke depan dengan multiple constraints dan variabel. 
+            Setiap keputusan mempengaruhi keputusan berikutnya. 
+            Buat rencana yang sustainable dan feasible.
+          </p>
+          <div style="margin-top: 1rem; padding: 0.5rem; background: #f1f8f4; border-radius: 6px;">
+            <strong>Keterampilan yang diasah:</strong>
+            <ul style="margin-top: 0.5rem; padding-left: 1.2rem; font-size: 0.9rem;">
+              <li>Strategic thinking</li>
+              <li>Systems thinking</li>
+              <li>Long-term planning</li>
+            </ul>
+          </div>
+          <button class="btn" style="margin-top: 1rem; width: 100%;">Mulai Game</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mini Games Link -->
+    <div class="card" style="text-align: center; background: linear-gradient(135deg, var(--forest-lightest) 0%, var(--sky-blue) 100%);">
+      <h2 style="color: var(--forest-dark);">🎮 Butuh Refresh?</h2>
+      <p style="font-size: 1.1rem; margin: 1rem 0;">
+        Coba mini games yang lebih ringan dan menyenangkan!
+      </p>
+      <a href="mini-games.html" class="btn btn-primary" style="display: inline-block;">
+        🎯 Mainkan Mini Games
+      </a>
+    </div>
+
+    <!-- Back Button -->
+    <div class="card" style="text-align: center;">
+      <a href="index.html" class="btn btn-primary">← Kembali ke Beranda</a>
+    </div>
+  </div>
+
+  <script>
+    function startGame(gameType) {
+      localStorage.setItem('gameType', gameType);
+      window.location.href = 'game-critical.html';
+    }
+  </script>
+</body>
+</html>
+

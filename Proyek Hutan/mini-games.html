@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Games - Platform Edukasi Hutan</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>🎮 Mini Games</h1>
+      <p class="subtitle">Game Sederhana untuk Refresh dan Belajar Sambil Bermain</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>🎯 Pilih Mini Game</h2>
+      <p style="font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8;">
+        Pilih salah satu mini game di bawah ini untuk refresh pikiran sambil tetap belajar tentang hutan Indonesia. 
+        Game-game ini lebih ringan dan menyenangkan!
+      </p>
+
+      <div class="features-grid">
+        <!-- Quiz Game -->
+        <div class="feature-card" style="cursor: pointer;" onclick="startMiniGame('quiz')">
+          <div class="icon">❓</div>
+          <h4>Quiz Hutan Indonesia</h4>
+          <p><strong>Waktu: ~5 menit</strong></p>
+          <p style="margin-top: 0.5rem;">
+            Uji pengetahuan Anda dengan 10 pertanyaan pilihan ganda tentang hutan Indonesia. 
+            Belajar sambil bermain!
+          </p>
+          <button class="btn" style="margin-top: 1rem; width: 100%;">Mulai Quiz</button>
+        </div>
+
+        <!-- True/False Game -->
+        <div class="feature-card" style="cursor: pointer;" onclick="startMiniGame('truefalse')">
+          <div class="icon">✅</div>
+          <h4>Benar atau Salah</h4>
+          <p><strong>Waktu: ~3 menit</strong></p>
+          <p style="margin-top: 0.5rem;">
+            Cepat! Tentukan apakah pernyataan tentang hutan benar atau salah. 
+            Game cepat dan seru!
+          </p>
+          <button class="btn" style="margin-top: 1rem; width: 100%;">Mulai Game</button>
+        </div>
+
+        <!-- Quick Match -->
+        <div class="feature-card" style="cursor: pointer;" onclick="startMiniGame('quickmatch')">
+          <div class="icon">⚡</div>
+          <h4>Quick Match</h4>
+          <p><strong>Waktu: ~2 menit</strong></p>
+          <p style="margin-top: 0.5rem;">
+            Cocokkan dengan cepat! Temukan pasangan yang benar secepat mungkin. 
+            Game seru dan menantang!
+          </p>
+          <button class="btn" style="margin-top: 1rem; width: 100%;">Mulai Game</button>
+        </div>
+
+        <!-- Number Puzzle -->
+        <div class="feature-card" style="cursor: pointer;" onclick="startMiniGame('puzzle')">
+          <div class="icon">🧩</div>
+          <h4>Puzzle Angka</h4>
+          <p><strong>Waktu: ~4 menit</strong></p>
+          <p style="margin-top: 0.5rem;">
+            Susun angka dengan benar! Puzzle sederhana dengan tema data hutan Indonesia.
+          </p>
+          <button class="btn" style="margin-top: 1rem; width: 100%;">Mulai Game</button>
+        </div>
+
+        <!-- Category Game -->
+        <div class="feature-card" style="cursor: pointer;" onclick="startMiniGame('category')">
+          <div class="icon">📂</div>
+          <h4>Kategorisasi</h4>
+          <p><strong>Waktu: ~3 menit</strong></p>
+          <p style="margin-top: 0.5rem;">
+            Pilih kategori yang tepat untuk setiap aktivitas. 
+            Uji pemahaman Anda tentang dampak lingkungan!
+          </p>
+          <button class="btn" style="margin-top: 1rem; width: 100%;">Mulai Game</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="card" style="text-align: center;">
+      <a href="index.html" class="btn btn-primary">← Kembali ke Beranda</a>
+    </div>
+  </div>
+
+  <script>
+    function startMiniGame(gameType) {
+      localStorage.setItem('miniGameType', gameType);
+      window.location.href = 'mini-game-play.html';
+    }
+  </script>
+</body>
+</html>

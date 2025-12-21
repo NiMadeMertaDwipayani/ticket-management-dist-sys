@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debat Kebijakan Nasional - Simulasi Kebijakan Lingkungan</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>💬 Debat Kebijakan Nasional</h1>
+      <p class="subtitle">Pilih Pendekatan Utama untuk Kebijakan Lingkungan</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>⚖️ Pilih Pendekatan Utama</h2>
+      <p style="font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8;">
+        Dalam debat kebijakan nasional, Anda harus memilih pendekatan utama yang akan menjadi 
+        landasan kebijakan lingkungan Indonesia. Setiap pendekatan memiliki konsekuensi berbeda 
+        terhadap pembangunan ekonomi dan kelestarian lingkungan.
+      </p>
+
+      <div class="features-grid">
+        <div class="feature-card" style="cursor: pointer; text-align: center;" onclick="pilih('ekonomi')">
+          <div class="icon">💰</div>
+          <h4>Prioritaskan Ekonomi</h4>
+          <p style="margin-top: 1rem;">
+            Fokus pada pertumbuhan ekonomi dan pembangunan infrastruktur. 
+            Pendekatan ini dapat meningkatkan PDB dan menciptakan lapangan kerja, 
+            namun berisiko terhadap kelestarian lingkungan jangka panjang.
+          </p>
+          <button style="margin-top: 1rem; width: 100%;">Pilih Pendekatan Ini</button>
+        </div>
+
+        <div class="feature-card" style="cursor: pointer; text-align: center;" onclick="pilih('lingkungan')">
+          <div class="icon">🌳</div>
+          <h4>Prioritaskan Lingkungan</h4>
+          <p style="margin-top: 1rem;">
+            Fokus pada konservasi dan keberlanjutan lingkungan. 
+            Pendekatan ini menjaga ekosistem dan keanekaragaman hayati, 
+            serta meningkatkan stabilitas jangka panjang, namun mungkin 
+            memerlukan investasi awal yang lebih besar.
+          </p>
+          <button style="margin-top: 1rem; width: 100%;">Pilih Pendekatan Ini</button>
+        </div>
+      </div>
+
+      <div class="fact-box" style="margin-top: 2rem;">
+        <strong>💡 Pertimbangan Penting:</strong>
+        <p>
+          Keputusan ini akan mempengaruhi evaluasi akhir kebijakan Anda. 
+          Tidak ada pilihan yang sepenuhnya benar atau salah - setiap pendekatan 
+          memiliki trade-off yang perlu dipertimbangkan dengan matang.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function pilih(p){
+      localStorage.setItem("debat",
+        p === "ekonomi"
+        ? "Pendekatan ekonomi dipilih. Kebijakan ini dapat meningkatkan pertumbuhan ekonomi jangka pendek, namun risiko ekologis meningkat dan dapat berdampak pada keberlanjutan jangka panjang."
+        : "Pendekatan lingkungan dipilih. Kebijakan ini fokus pada konservasi dan keberlanjutan, meningkatkan stabilitas ekologis jangka panjang dan ketahanan terhadap perubahan iklim."
+      );
+      window.location.href = "hasil.html";
+    }
+  </script>
+</body>
+</html>

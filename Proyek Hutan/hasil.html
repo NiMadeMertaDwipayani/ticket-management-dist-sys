@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluasi Akhir - Simulasi Kebijakan Lingkungan</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>📋 Evaluasi Akhir Kebijakan</h1>
+      <p class="subtitle">Hasil Simulasi dan Analisis Kebijakan Anda</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Results Display -->
+    <div class="card">
+      <h2>📊 Hasil Simulasi</h2>
+      <div id="hasil" style="font-size: 1.2rem; padding: 1.5rem; background: linear-gradient(135deg, var(--forest-lightest) 0%, var(--sky-blue) 100%); border-radius: 12px; margin: 1rem 0; border-left: 5px solid var(--forest-medium);"></div>
+    </div>
+
+    <!-- AI Evaluation -->
+    <div class="card">
+      <h2>🤖 Evaluasi AI</h2>
+      <div id="ai" style="font-size: 1.1rem; padding: 1.5rem; background: #f1f8f4; border-radius: 12px; margin: 1rem 0; border-left: 5px solid var(--forest-medium); line-height: 1.8;"></div>
+    </div>
+
+    <!-- Debate Choice -->
+    <div class="card">
+      <h2>💬 Pendekatan yang Dipilih</h2>
+      <div id="debat" style="font-size: 1.1rem; padding: 1.5rem; background: #f1f8f4; border-radius: 12px; margin: 1rem 0; border-left: 5px solid var(--forest-medium); line-height: 1.8;"></div>
+    </div>
+
+    <!-- Academic Report -->
+    <div class="card">
+      <h2>📚 Laporan Akademis</h2>
+      <div class="education-section" style="margin: 0;">
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+          Simulasi ini menunjukkan bahwa kebijakan lingkungan membutuhkan pendekatan sistemik dan holistik. 
+          Keputusan yang mengabaikan daya dukung lingkungan akan memicu krisis sosial dan ekologis jangka panjang, 
+          sementara kebijakan yang terlalu konservatif tanpa mempertimbangkan kebutuhan ekonomi dapat menghambat pembangunan.
+        </p>
+
+        <div class="fact-box">
+          <strong>Kesimpulan Kunci:</strong>
+          <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+            <li>Kebijakan lingkungan yang efektif memerlukan keseimbangan antara ekonomi, sosial, dan ekologi</li>
+            <li>Trade-off tidak dapat dihindari, namun dapat diminimalkan melalui perencanaan yang matang</li>
+            <li>Pendekatan partisipatif yang melibatkan masyarakat lokal meningkatkan legitimasi dan keberhasilan kebijakan</li>
+            <li>Investasi dalam konservasi dan restorasi memberikan return jangka panjang yang signifikan</li>
+            <li>Data real-time dan monitoring berkelanjutan penting untuk evaluasi dan penyesuaian kebijakan</li>
+          </ul>
+        </div>
+
+        <div class="fact-box" style="margin-top: 1.5rem;">
+          <strong>Rekomendasi:</strong>
+          <p>
+            Untuk mencapai pembangunan berkelanjutan, diperlukan integrasi kebijakan lintas sektor, 
+            penguatan institusi, dan komitmen jangka panjang. Platform simulasi ini dapat digunakan 
+            sebagai alat pembelajaran untuk memahami kompleksitas pengambilan keputusan kebijakan lingkungan.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="card" style="text-align: center; background: linear-gradient(135deg, var(--forest-lightest) 0%, var(--sky-blue) 100%);">
+      <h2 style="color: var(--forest-dark);">🔄 Coba Lagi?</h2>
+      <p style="font-size: 1.1rem; margin: 1.5rem 0;">
+        Eksplorasi skenario berbeda dan lihat bagaimana keputusan yang berbeda mempengaruhi hasil akhir.
+      </p>
+      <a href="index.html" class="btn btn-primary" style="display: inline-block; margin: 0.5rem;">
+        Kembali ke Beranda
+      </a>
+      <a href="game.html" class="btn btn-primary" style="display: inline-block; margin: 0.5rem;">
+        Ulangi Simulasi
+      </a>
+    </div>
+  </div>
+
+  <footer style="background: var(--forest-dark); color: var(--text-light); padding: 2rem; text-align: center; margin-top: 3rem;">
+    <p>&copy; 2024 Simulasi Kebijakan Lingkungan | Platform Edukasi Berbasis Data</p>
+  </footer>
+
+  <script>
+    // Load results from localStorage
+    const hasil = localStorage.getItem("hasil");
+    const ai = localStorage.getItem("ai");
+    const debat = localStorage.getItem("debat");
+
+    document.getElementById("hasil").innerText = hasil || "Hasil simulasi tidak tersedia.";
+    document.getElementById("ai").innerText = ai || "Evaluasi AI tidak tersedia.";
+    document.getElementById("debat").innerText = debat || "Pendekatan tidak dipilih.";
+  </script>
+</body>
+</html>

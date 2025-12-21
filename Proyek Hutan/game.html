@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policy Simulator - Simulasi Kebijakan Lingkungan</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>🎮 Simulator Kebijakan Lingkungan</h1>
+      <p class="subtitle">Ambil Keputusan Bijak untuk Masa Depan Hutan Indonesia</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Progress Indicator -->
+    <div class="progress-container">
+      <h3 style="margin-bottom: 0.5rem;">📊 Progress Simulasi</h3>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%;">0%</div>
+      </div>
+      <p style="text-align: center; color: var(--forest-medium); font-weight: 500;" id="progressText">Kasus 1 dari 3</p>
+    </div>
+
+    <!-- Case Display -->
+    <div class="card">
+      <h2 id="judulKasus">Memuat Kasus...</h2>
+      <p id="deskripsiKasus" style="font-size: 1.1rem; color: var(--text-dark); line-height: 1.8;"></p>
+    </div>
+
+    <!-- Metrics Display with Tooltips -->
+    <div class="card">
+      <h2>📊 Indikator Kebijakan 
+        <button class="info-btn" onclick="openGlossary()">📖 Lihat Semua Definisi</button>
+      </h2>
+      <div class="data">
+        <p>
+          <span class="indicator-icon">🌳</span>
+          <span class="indicator-label">Lingkungan</span>
+          <div class="indicator-value-container">
+            <div class="indicator-progress">
+              <div class="indicator-progress-fill" id="progressLingkungan" style="width: 70%;"></div>
+            </div>
+            <span class="indicator-number" id="lingkungan">70</span>
+            <span class="indicator-max">/100</span>
+          </div>
+        </p>
+        <p>
+          <span class="indicator-icon">💰</span>
+          <span class="indicator-label">Ekonomi</span>
+          <div class="indicator-value-container">
+            <div class="indicator-progress">
+              <div class="indicator-progress-fill" id="progressEkonomi" style="width: 70%;"></div>
+            </div>
+            <span class="indicator-number" id="ekonomi">70</span>
+            <span class="indicator-max">/100</span>
+          </div>
+        </p>
+        <p>
+          <span class="indicator-icon">🐾</span>
+          <span class="indicator-label">Biodiversitas</span>
+          <div class="indicator-value-container">
+            <div class="indicator-progress">
+              <div class="indicator-progress-fill" id="progressBiodiversitas" style="width: 70%;"></div>
+            </div>
+            <span class="indicator-number" id="biodiversitas">70</span>
+            <span class="indicator-max">/100</span>
+          </div>
+        </p>
+        <p>
+          <span class="indicator-icon">👥</span>
+          <span class="indicator-label">Sosial</span>
+          <div class="indicator-value-container">
+            <div class="indicator-progress">
+              <div class="indicator-progress-fill" id="progressSosial" style="width: 70%;"></div>
+            </div>
+            <span class="indicator-number" id="sosial">70</span>
+            <span class="indicator-max">/100</span>
+          </div>
+        </p>
+        <p>
+          <span class="indicator-icon">⚠️</span>
+          <span class="indicator-label">Emisi</span>
+          <div class="indicator-value-container">
+            <div class="indicator-progress">
+              <div class="indicator-progress-fill very-low" id="progressEmisi" style="width: 40%;"></div>
+            </div>
+            <span class="indicator-number" id="emisi">40</span>
+            <span class="indicator-max">/100</span>
+          </div>
+        </p>
+        <p>
+          <span class="indicator-icon">💧</span>
+          <span class="indicator-label">Air</span>
+          <div class="indicator-value-container">
+            <div class="indicator-progress">
+              <div class="indicator-progress-fill" id="progressAir" style="width: 70%;"></div>
+            </div>
+            <span class="indicator-number" id="air">70</span>
+            <span class="indicator-max">/100</span>
+          </div>
+        </p>
+        <p>
+          <span class="indicator-icon">🧾</span>
+          <span class="indicator-label">Legitimasi</span>
+          <div class="indicator-value-container">
+            <div class="indicator-progress">
+              <div class="indicator-progress-fill low" id="progressLegitimasi" style="width: 60%;"></div>
+            </div>
+            <span class="indicator-number" id="legitimasi">60</span>
+            <span class="indicator-max">/100</span>
+          </div>
+        </p>
+      </div>
+    </div>
+
+    <!-- Policy Choices with Detailed Explanations -->
+    <div class="card">
+      <h2>⚖️ Pilih Kebijakan</h2>
+      <p style="margin-bottom: 1rem; color: var(--forest-medium); font-weight: 500;">
+        Pilih salah satu opsi kebijakan di bawah ini. Setiap pilihan memiliki penjelasan detail dan dampak yang berbeda.
+      </p>
+      <div id="pilihan"></div>
+    </div>
+
+    <!-- Justification -->
+    <div class="card">
+      <h2>💭 Analisis Kebijakan</h2>
+      <p id="justifikasi" style="font-size: 1.1rem; padding: 1rem; background: #f1f8f4; border-radius: 8px; border-left: 4px solid var(--forest-medium);"></p>
+    </div>
+
+    <!-- Trade-Off Matrix -->
+    <div class="card">
+      <h2>⚖️ Matriks Trade-Off</h2>
+      <p style="margin-bottom: 1rem; color: var(--forest-medium);">
+        Analisis dampak relatif terhadap baseline (70):
+      </p>
+      <table>
+        <tr>
+          <th>Variabel</th>
+          <th>Dampak</th>
+          <th>Interpretasi</th>
+        </tr>
+        <tr>
+          <td><strong>🌳 Lingkungan</strong></td>
+          <td id="tLing" style="font-weight: 600; font-size: 1.2rem;"></td>
+          <td id="tLingDesc"></td>
+        </tr>
+        <tr>
+          <td><strong>💰 Ekonomi</strong></td>
+          <td id="tEko" style="font-weight: 600; font-size: 1.2rem;"></td>
+          <td id="tEkoDesc"></td>
+        </tr>
+        <tr>
+          <td><strong>👥 Sosial</strong></td>
+          <td id="tSos" style="font-weight: 600; font-size: 1.2rem;"></td>
+          <td id="tSosDesc"></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Timeline -->
+    <div class="card">
+      <h2>📜 Timeline Keputusan</h2>
+      <ul id="timeline" style="max-height: 300px; overflow-y: auto;"></ul>
+    </div>
+  </div>
+
+  <!-- Glossary Modal -->
+  <div id="glossaryModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeGlossary()">&times;</span>
+      <h2 style="color: var(--forest-dark); margin-bottom: 1.5rem;">📖 Glosarium Indikator</h2>
+      <div class="glossary-item">
+        <h4>🌳 Lingkungan</h4>
+        <p>Mengukur kesehatan ekosistem hutan secara keseluruhan, termasuk kualitas tanah, udara, dan keseimbangan ekologis. Faktor yang mempengaruhi: deforestasi, polusi, degradasi lahan, dan perubahan iklim. Nilai tinggi (70-100) berarti hutan dalam kondisi baik dan berkelanjutan.</p>
+      </div>
+      <div class="glossary-item">
+        <h4>💰 Ekonomi</h4>
+        <p>Mencerminkan kontribusi sektor kehutanan dan perkebunan terhadap PDB, lapangan kerja, dan devisa negara. Termasuk pendapatan dari ekspor, investasi, dan industri terkait. Nilai tinggi berarti pertumbuhan ekonomi yang kuat namun perlu diseimbangkan dengan aspek lingkungan.</p>
+      </div>
+      <div class="glossary-item">
+        <h4>🐾 Biodiversitas</h4>
+        <p>Tingkat keanekaragaman hayati, termasuk jumlah spesies, habitat yang terjaga, dan populasi satwa langka. Indonesia memiliki 17% spesies dunia. Nilai tinggi berarti ekosistem kaya akan kehidupan dan terhindar dari kepunahan massal.</p>
+      </div>
+      <div class="glossary-item">
+        <h4>👥 Sosial</h4>
+        <p>Dampak kebijakan terhadap masyarakat, termasuk kesejahteraan, akses sumber daya, partisipasi dalam pengambilan keputusan, dan hak masyarakat adat. Nilai tinggi berarti manfaat sosial yang besar dan keadilan yang terjaga.</p>
+      </div>
+      <div class="glossary-item">
+        <h4>⚠️ Emisi</h4>
+        <p>Jumlah gas rumah kaca (terutama CO₂) yang dilepaskan ke atmosfer. Deforestasi, kebakaran hutan, dan konversi lahan gambut meningkatkan emisi. Nilai rendah lebih baik karena berarti emisi sedikit dan kontribusi terhadap perubahan iklim minimal.</p>
+      </div>
+      <div class="glossary-item">
+        <h4>💧 Air</h4>
+        <p>Kualitas dan ketersediaan air bersih, kapasitas penyerapan air hutan, dan risiko banjir/kekeringan. Hutan berperan sebagai "spons raksasa" yang menyerap dan melepaskan air secara bertahap. Nilai tinggi berarti siklus air yang sehat dan stabil.</p>
+      </div>
+      <div class="glossary-item">
+        <h4>🧾 Legitimasi</h4>
+        <p>Tingkat penerimaan dan dukungan publik terhadap kebijakan, termasuk dari masyarakat adat, LSM, komunitas internasional, dan stakeholder lainnya. Nilai tinggi berarti kebijakan dianggap sah, adil, dan mendapat dukungan luas.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/evaluator.js"></script>
+  <script src="js/game.js"></script>
+  <script>
+    // Glossary Modal Functions
+    function openGlossary() {
+      document.getElementById("glossaryModal").style.display = "block";
+    }
+
+    function closeGlossary() {
+      document.getElementById("glossaryModal").style.display = "none";
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById("glossaryModal");
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
