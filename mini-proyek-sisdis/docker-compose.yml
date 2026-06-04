@@ -1,0 +1,160 @@
+services:
+  # 1. Database Persistent Storage
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: ticket_postgres
+    environment:
+      POSTGRES_USER: amik_user
+      POSTGRES_PASSWORD: superpassword
+      POSTGRES_DB: helpdesk_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # --- TAMBAHKAN BAGIAN HEALTHCHECK INI ---
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U amik_user -d helpdesk_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Message Broker RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: ticket_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  # 3. Ticket Service - Instance 1
+  ticket_service_1:
+    build: ./ticket-service
+    container_name: ticket_api_1
+    environment:
+      PORT: 3000
+      DB_HOST: postgres_db
+      RABBITMQ_HOST: rabbitmq
+    # --- MODIFIKASI DEPENDS_ON MENJADI SEPERTI INI ---
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+
+  # 4. Ticket Service - Instance 2
+  ticket_service_2:
+    build: ./ticket-service
+    container_name: ticket_api_2
+    environment:
+      PORT: 3000
+      DB_HOST: postgres_db
+      RABBITMQ_HOST: rabbitmq
+    # --- MODIFIKASI DEPENDS_ON MENJADI SEPERTI INI ---
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+
+  # 5. Nginx Load Balancer
+  nginx_lb:
+    image: nginx:alpine
+    container_name: ticket_load_balancer
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    # --- MODIFIKASI DEPENDS_ON MENJADI SEPERTI INI ---
+    depends_on:
+      ticket_service_1:
+        condition: service_started
+      ticket_service_2:
+        condition: service_started
+        
+# ==========================================
+# WORKER NODES (HIRSCHBERG-SINCLAIR RING - 6 NODES)
+# ==========================================
+
+  worker_node_1:
+    build: ./worker-service
+    container_name: worker_node_1
+    environment:
+      NODE_ID: 1
+      PORT: 4001
+      # Kiri ke Node 6 (Ujung Ring), Kanan ke Node 2
+      LEFT_NEIGHBOR: http://worker_node_6:4006
+      RIGHT_NEIGHBOR: http://worker_node_2:4002
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - rabbitmq
+
+  worker_node_2:
+    build: ./worker-service
+    container_name: worker_node_2
+    environment:
+      NODE_ID: 2
+      PORT: 4002
+      # Kiri ke Node 1, Kanan ke Node 3
+      LEFT_NEIGHBOR: http://worker_node_1:4001
+      RIGHT_NEIGHBOR: http://worker_node_3:4003
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - rabbitmq
+
+  worker_node_3:
+    build: ./worker-service
+    container_name: worker_node_3
+    environment:
+      NODE_ID: 3
+      PORT: 4003
+      # Kiri ke Node 2, Kanan ke Node 4
+      LEFT_NEIGHBOR: http://worker_node_2:4002
+      RIGHT_NEIGHBOR: http://worker_node_4:4004
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - rabbitmq
+
+  worker_node_4:
+    build: ./worker-service
+    container_name: worker_node_4
+    environment:
+      NODE_ID: 4
+      PORT: 4004
+      # Kiri ke Node 3, Kanan ke Node 5
+      LEFT_NEIGHBOR: http://worker_node_3:4003
+      RIGHT_NEIGHBOR: http://worker_node_5:4005
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - rabbitmq
+
+  worker_node_5:
+    build: ./worker-service
+    container_name: worker_node_5
+    environment:
+      NODE_ID: 5
+      PORT: 4005
+      # Kiri ke Node 4, Kanan ke Node 6
+      LEFT_NEIGHBOR: http://worker_node_4:4004
+      RIGHT_NEIGHBOR: http://worker_node_6:4006
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - rabbitmq
+
+  worker_node_6:
+    build: ./worker-service
+    container_name: worker_node_6
+    environment:
+      NODE_ID: 6
+      PORT: 4006
+      # Kiri ke Node 5, Kanan balik ke Node 1 (Tutup Ring)
+      LEFT_NEIGHBOR: http://worker_node_5:4005
+      RIGHT_NEIGHBOR: http://worker_node_1:4001
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - rabbitmq
+
+volumes:
+  postgres_data:

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Helpdesk Ticketing System</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-2: #334155;
+      --border: #475569;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --success: #22c55e;
+      --warning: #eab308;
+      --danger: #ef4444;
+      --radius: 12px;
+      --shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      color: var(--muted);
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .card-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-header .badge-role {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.15rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.7rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      width: 100%;
+      margin-top: 0.25rem;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #3f4f66;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: -0.25rem 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    thead th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(71, 85, 105, 0.4);
+      vertical-align: middle;
+    }
+
+    tbody tr:hover {
+      background: rgba(15, 23, 42, 0.4);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .status-pending {
+      background: rgba(234, 179, 8, 0.2);
+      color: #fde047;
+      border: 1px solid rgba(234, 179, 8, 0.45);
+    }
+
+    .status-done {
+      background: rgba(34, 197, 94, 0.2);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.45);
+    }
+
+    .status-other {
+      background: rgba(148, 163, 184, 0.2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--muted);
+    }
+
+    .empty-state svg {
+      opacity: 0.4;
+      margin-bottom: 0.75rem;
+    }
+
+    .loading-row td {
+      text-align: center;
+      color: var(--muted);
+      padding: 2rem;
+    }
+
+    /* Toast alerts */
+    .toast-container {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.25rem;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      max-width: 380px;
+      width: calc(100% - 2rem);
+    }
+
+    .toast {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1rem 1.15rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      animation: slideIn 0.35s ease;
+      border: 1px solid transparent;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(1.5rem);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .toast-success {
+      background: #14532d;
+      border-color: #22c55e;
+      color: #dcfce7;
+    }
+
+    .toast-error {
+      background: #450a0a;
+      border-color: #ef4444;
+      color: #fecaca;
+    }
+
+    .toast-info {
+      background: #1e3a5f;
+      border-color: #3b82f6;
+      color: #dbeafe;
+    }
+
+    .toast-icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .toast-body strong {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .toast-body span {
+      font-size: 0.82rem;
+      opacity: 0.9;
+    }
+
+    .toast-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: inherit;
+      opacity: 0.7;
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 0 0.25rem;
+    }
+
+    .toast-close:hover {
+      opacity: 1;
+    }
+
+    .ticket-count {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <div class="page">
+    <header>
+      <h1>Helpdesk Ticketing System</h1>
+      <p>Mini Proyek Sistem Terdistribusi — Antrean Keluhan Pelanggan Berbasis Node Worker & RabbitMQ</p>
+    </header>
+
+    <main class="layout">
+      <!-- Form Pelanggan -->
+      <section class="card" aria-labelledby="formTitle">
+        <div class="card-header">
+          <h2 id="formTitle">
+            Form Input Tiket
+            <span class="badge-role">Pelanggan</span>
+          </h2>
+        </div>
+        <div class="card-body">
+          <form id="ticketForm" novalidate>
+            <div class="form-group">
+              <label for="username">Nama Pengguna</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Contoh: Budi Santoso"
+                required
+                autocomplete="name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="title">Judul Keluhan</label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Ringkasan masalah Anda"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="description">Detail Masalah</label>
+              <textarea
+                id="description"
+                name="description"
+                placeholder="Jelaskan keluhan secara lengkap..."
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              Kirim Keluhan
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Dashboard Staf -->
+      <section class="card" aria-labelledby="dashTitle">
+        <div class="card-header">
+          <h2 id="dashTitle">
+            Dashboard Pemantauan
+            <span class="badge-role">Staf Support</span>
+          </h2>
+          <button type="button" class="btn btn-secondary" id="refreshBtn">
+            Refresh Data
+          </button>
+        </div>
+        <div class="card-body">
+          <p class="ticket-count" id="ticketCount">Memuat data...</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tanggal</th>
+                  <th>Pengirim</th>
+                  <th>Judul</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="ticketTableBody">
+                <tr class="loading-row">
+                  <td colspan="5">Memuat tiket...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const API_URL = "http://localhost/api/tickets";
+
+    const form = document.getElementById("ticketForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const tableBody = document.getElementById("ticketTableBody");
+    const ticketCount = document.getElementById("ticketCount");
+    const toastContainer = document.getElementById("toastContainer");
+
+    function showToast(type, title, message) {
+      const icons = { success: "✓", error: "✕", info: "ℹ" };
+      const toast = document.createElement("div");
+      toast.className = `toast toast-${type}`;
+      toast.innerHTML = `
+        <span class="toast-icon" aria-hidden="true">${icons[type] || "ℹ"}</span>
+        <div class="toast-body">
+          <strong>${escapeHtml(title)}</strong>
+          <span>${escapeHtml(message)}</span>
+        </div>
+        <button type="button" class="toast-close" aria-label="Tutup">×</button>
+      `;
+      toast.querySelector(".toast-close").addEventListener("click", () => toast.remove());
+      toastContainer.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transition = "opacity 0.3s";
+        setTimeout(() => toast.remove(), 300);
+      }, 5000);
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text ?? "";
+      return div.innerHTML;
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return "-";
+      const d = new Date(dateStr);
+      if (Number.isNaN(d.getTime())) return String(dateStr);
+      return d.toLocaleString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+
+    function statusBadgeClass(status) {
+      const s = (status || "").toUpperCase();
+      if (s === "PENDING") return "status-pending";
+      if (s === "SUCCESS" || s === "PROCESSED") return "status-done";
+      return "status-other";
+    }
+
+    function normalizeTickets(payload) {
+      if (Array.isArray(payload)) return payload;
+      if (payload && Array.isArray(payload.tickets)) return payload.tickets;
+      if (payload && Array.isArray(payload.data)) return payload.data;
+      return [];
+    }
+
+    function renderTickets(tickets) {
+      ticketCount.textContent =
+        tickets.length === 0
+          ? "Belum ada tiket masuk."
+          : `Menampilkan ${tickets.length} tiket keluhan.`;
+
+      if (tickets.length === 0) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="5">
+              <div class="empty-state">
+                <p>Belum ada data tiket.<br>Kirim keluhan dari form atau klik Refresh.</p>
+              </div>
+            </td>
+          </tr>`;
+        return;
+      }
+
+      tableBody.innerHTML = tickets
+        .map(
+          (t) => `
+        <tr>
+          <td>#${escapeHtml(String(t.id ?? "-"))}</td>
+          <td>${escapeHtml(formatDate(t.created_at))}</td>
+          <td>${escapeHtml(t.username ?? "-")}</td>
+          <td>${escapeHtml(t.title ?? "-")}</td>
+          <td>
+            <span class="status-badge ${statusBadgeClass(t.status)}">
+              ${escapeHtml((t.status || "UNKNOWN").toUpperCase())}
+            </span>
+          </td>
+        </tr>`
+        )
+        .join("");
+    }
+
+    async function fetchTickets(showFeedback = false) {
+      refreshBtn.disabled = true;
+      tableBody.innerHTML =
+        '<tr class="loading-row"><td colspan="5">Memuat data...</td></tr>';
+
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          const msg = data.error || data.message || `HTTP ${res.status}`;
+          throw new Error(msg);
+        }
+
+        const tickets = normalizeTickets(data);
+        renderTickets(tickets);
+
+        if (showFeedback) {
+          showToast("success", "Data diperbarui", `${tickets.length} tiket dimuat dari server.`);
+        }
+      } catch (err) {
+        renderTickets([]);
+        ticketCount.textContent = "Gagal memuat data.";
+        const hint =
+          err.message === "Failed to fetch"
+            ? "Pastikan Docker backend berjalan dan endpoint GET /api/tickets tersedia."
+            : err.message;
+        showToast("error", "Gagal memuat tiket", hint);
+      } finally {
+        refreshBtn.disabled = false;
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const title = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+
+      if (!username || !title || !description) {
+        showToast("error", "Form belum lengkap", "Isi semua field sebelum mengirim.");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Mengirim...";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, description, username }),
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          const msg = data.error || data.message || `HTTP ${res.status}`;
+          throw new Error(msg);
+        }
+
+        showToast(
+          "success",
+          "Tiket berhasil dibuat",
+          data.message || `Tiket #${data.ticket?.id ?? ""} masuk antrean dengan status PENDING.`
+        );
+        form.reset();
+        await fetchTickets(false);
+      } catch (err) {
+        const hint =
+          err.message === "Failed to fetch"
+            ? "Tidak bisa terhubung ke http://localhost — jalankan docker compose up."
+            : err.message;
+        showToast("error", "Gagal mengirim tiket", hint);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Kirim Keluhan";
+      }
+    });
+
+    refreshBtn.addEventListener("click", () => fetchTickets(true));
+
+    fetchTickets(false);
+  </script>
+</body>
+</html>
