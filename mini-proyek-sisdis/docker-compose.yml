@@ -88,8 +88,10 @@ services:
       LEFT_NEIGHBOR: http://worker_node_6:4006
       RIGHT_NEIGHBOR: http://worker_node_2:4002
       RABBITMQ_HOST: rabbitmq
+      DB_HOST: postgres_db
     depends_on:
       - rabbitmq
+      - postgres_db 
 
   worker_node_2:
     build: ./worker-service
